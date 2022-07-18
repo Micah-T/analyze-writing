@@ -8,9 +8,10 @@ def process(s):
     a = analyze.analyze(t)
     g = generateHTML.generateHTML(a)
 
-sites = json.loads(open("sites.json"))
+f = open("sites.json", "r")
+
+sites = json.loads(f.read())
 print(sites)
 
-for s in sites:
-    print(s.sitename)
-    print(s.feedurl)
+for s in sites["sites"]:
+    print(f"{s['sitename']}--{s['feedurl']}")
