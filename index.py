@@ -15,3 +15,4 @@ print(sites)
 
 for s in sites["sites"]:
     print(f"{s['sitename']}--{s['feedurl']}")
+    crawl.crawl(s["feedurl"])

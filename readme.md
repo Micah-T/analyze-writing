@@ -8,3 +8,4 @@ It would be interesting to generate an analytical report from writing. To start,
 
 ## Architecture
 
+The sites themselves are stored in `sites.json`. `index.py` loops through them and passes the sitemaps through the `modules`.
