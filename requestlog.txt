@@ -1,0 +1,4 @@
+https://micah.torcellini.org/sitemap.xml,200,2022-07-26 12:15:34.253726
+https://scrambletheduck.org/sitemap.xml,200,2022-07-26 12:15:34.478698
+https://micah.torcellini.org/sitemap.xml,200,2022-07-26 12:16:15.921562
+https://scrambletheduck.org/sitemap.xml,200,2022-07-26 12:16:16.196885
