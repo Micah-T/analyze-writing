@@ -2,11 +2,11 @@
     "sites": [
         {
             "sitename": "micah.torcellini.org",
-            "feedurl": "https://micah.torcellini.org/feed.xml"
+            "feedurl": "https://micah.torcellini.org/sitemap.xml"
         },
         {
             "sitename": "Scramble the Duck",
-            "feedurl": "https://scrambletheduck.org/feed.xml"
+            "feedurl": "https://scrambletheduck.org/sitemap.xml"
         }
     ]
 }
