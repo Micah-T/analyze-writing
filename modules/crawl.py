@@ -8,7 +8,6 @@ import datetime
 # HTML requests with error handling and logging
 
 errorpages = []
-
 def request(s):
     t = r.get(s)
 
@@ -17,12 +16,13 @@ def request(s):
     log.write(str(s) + "," + str(t.status_code) + "," + str(datetime.datetime.now()) + "\n")
     log.close()
 
-# error handling in case there is a 404 error; otherwise we'll end up including error pages in our HTML corpus. 
+    # error handling in case there is an error; otherwise we'll end up including error pages in our HTML corpus. 
     if t.status_code == 200:
         print(f"successfully requested {s}")
         return t
 
     else:
+        # save all the errors to a list and tell other functions to ignore this page
         print(f"error requesting {s}: {t.status_code}")
         errordata = {"url": str(s), "statusCode": t.status_code}
         errorpages.append(errordata)
@@ -34,7 +34,7 @@ def getXML(s):
         # because we don't have much reason to continue unless a sitemap is available. 
         print("Error requesting XML sitemap. Exiting program.")
         exit() 
-    # because sometimes people like me don't always properly format our XML we might as well guess... 😬
+    # because sometimes people like me don't always properly format our XML, let's guess... 😬
     if not response.encoding:
         encoding = "utf-8"
     else:
@@ -92,18 +92,29 @@ def HTMLcorpus(s):
         html.append(h)
     return html
 
+# extracts text from an HTML page
+def extractText(h):
+    # we'll take a few guesses at how the author uses semantic HTML
+    if h.main:
+        content = h.main
+    elif h.body:
+        content = h.body
+    else:
+        content = h
+    # now we'll delete blockquotes
+    if content.blockquote:
+        for x in content.find_all("blockquote"):
+            x.string = ""
+    # extract the remaining text
+    text = content.get_text()
+    return text
+
 # extracting the text from the HTML
 def text(s):
     html = HTMLcorpus(s)
     corpus = ""
     for h in html:
-        if h.main:
-            content = h.main
-        elif h.body:
-            content = h.body
-        else:
-            content = h
-        text = content.get_text()
+        text = extractText(h)
         corpus = corpus + text
     return corpus
 
