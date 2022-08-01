@@ -5,8 +5,8 @@ def render(data):
         return chevron.render(template, data)
 
 def write(content, filename):
-    f = open(f"_output/{filename.replace(' ', '-').replace( '.', '-')}.html", "w")
-    f.write(content)
+    with open(f"_output/{filename.replace(' ', '-').replace( '.', '-')}.html", "w") as f:
+        f.write(content)   
 
 def generateHTML(d):
     c = render(d)
