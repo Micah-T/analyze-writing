@@ -2521,3 +2521,5 @@ https://scrambletheduck.org/news/2022/02/01/scramble-forecasts-six-more-weeks/,2
 https://scrambletheduck.org/speeches/2022/opening/,200,2022-07-31 20:51:42.180025
 https://scrambletheduck.org/speeches/2022/announcement/,200,2022-07-31 20:51:42.287049
 https://scrambletheduck.org/news/2022/03/20/scramble-the-duck-proved-accurate-again/,200,2022-07-31 20:51:42.387614
+http://localhost:8080/sitemap.xml,200,2022-08-01 08:39:49.281855
+http://localhost:8080/sitemap.xml,200,2022-08-01 08:40:39.476470
