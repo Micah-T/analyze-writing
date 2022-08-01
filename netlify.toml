@@ -1,0 +1,4 @@
+[build]
+  publish = "_output"
+  command = "py index.py"
+  PYTHON_VERSION = 3.10
