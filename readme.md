@@ -11,4 +11,4 @@ It would be interesting to generate an analytical report from writing. To start,
 The sites themselves are stored in `sites.json`. `index.py` loops through them and passes the sitemaps through the `modules`.
 
 ## Caching
-Run `cache.py` to create a cache for development purposes instead of running bazillions of requests. 
+Run `cache.py` to create a cache for development purposes instead of running bazillions of requests. It doesn't work yet. 

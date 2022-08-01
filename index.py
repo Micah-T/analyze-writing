@@ -1,4 +1,5 @@
 import json
+import chevron
 import modules.crawl as crawl
 import modules.analyze as analyze
 import modules.generateHTML as generateHTML
@@ -6,7 +7,7 @@ import modules.generateHTML as generateHTML
 def process(s, n):
     t = crawl.crawl(s)
     a = analyze.analyze(t, n)
-#     g = generateHTML.generateHTML(a)
+    generateHTML.generateHTML(a)
 
 f = open("sites.json", "r")
 
