@@ -6,7 +6,6 @@ import datetime
 # Somewhat heavily using the instructions https://practicaldatascience.co.uk/data-science/how-to-parse-xml-sitemaps-using-python
 
 # HTML requests with error handling and logging
-
 errorpages = []
 def request(s):
     t = r.get(s)
@@ -81,6 +80,8 @@ def getHTML(s):
             encoding = response.encoding
         html = BeautifulSoup(response.content, 'lxml-html', from_encoding=encoding)
         return html
+    else:
+        return False
 
 # makes a list of every HTML page
 def HTMLcorpus(s):
@@ -89,7 +90,8 @@ def HTMLcorpus(s):
     html = []
     for l in list:
         h = getHTML(l)
-        html.append(h)
+        if h:
+            html.append(h)
     return html
 
 # extracts text from an HTML page
@@ -109,13 +111,20 @@ def extractText(h):
     text = content.get_text()
     return text
 
+# TODO: filter that there is indeed worthwile text. 
+def ofSubstance(t):
+    return True 
+
 # extracting the text from the HTML
 def text(s):
     html = HTMLcorpus(s)
     corpus = ""
     for h in html:
         text = extractText(h)
-        corpus = corpus + text
+        if ofSubstance(text):
+            corpus = corpus + text
+        else:
+            corpus = corpus
     return corpus
 
 def crawl(s):
