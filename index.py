@@ -5,7 +5,7 @@ import modules.generateHTML as generateHTML
 
 def process(s):
     t = crawl.crawl(s)
-#    a = analyze.analyze(t)
+    a = analyze.analyze(t)
 #     g = generateHTML.generateHTML(a)
 
 f = open("sites.json", "r")
