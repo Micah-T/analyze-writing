@@ -3,27 +3,38 @@ import requests as r
 import lxml as lxml
 import datetime
 
-# Somewhat heavily reliant on https://practicaldatascience.co.uk/data-science/how-to-parse-xml-sitemaps-using-python
+# Somewhat heavily using the instructions https://practicaldatascience.co.uk/data-science/how-to-parse-xml-sitemaps-using-python
+
+# HTML requests with error handling and logging
+
+errorpages = []
 
 def request(s):
     t = r.get(s)
 
+    # write to a request log to help explain my web analytics
     log = open("requestlog.txt", "a")
     log.write(str(s) + "," + str(t.status_code) + "," + str(datetime.datetime.now()) + "\n")
     log.close()
 
+# error handling in case there is a 404 error; otherwise we'll end up including error pages in our HTML corpus. 
     if t.status_code == 200:
         print(f"successfully requested {s}")
         return t
 
     else:
         print(f"error requesting {s}: {t.status_code}")
+        errordata = {"url": str(s), "statusCode": t.status_code}
+        errorpages.append(errordata)
         return False
 
 def getXML(s):
     response = request(s)
     if not response:
-        exit()
+        # because we don't have much reason to continue unless a sitemap is available. 
+        print("Error requesting XML sitemap. Exiting program.")
+        exit() 
+    # because sometimes people like me don't always properly format our XML we might as well guess... 😬
     if not response.encoding:
         encoding = "utf-8"
     else:
@@ -31,7 +42,7 @@ def getXML(s):
     xml = BeautifulSoup(response.content, 'lxml-xml', from_encoding=encoding)
     return xml
 
-# add capability for RSS and ATOM feeds
+# TODO: add capability for RSS and ATOM feeds
 
 def sitemapType(x):
     sitemapindex = x.find_all("sitemapindex")
@@ -44,8 +55,7 @@ def sitemapType(x):
         print("Unrecognized sort of sitemap.")
         return False
 
-# ok so none of my sitemaps have child sitemaps, but just in case. Integrate it if you want more functionality.
-
+# none of *my* sitemaps have child sitemaps, but this would add flexibility. Right now this function doesn't actually get called. 
 def getChildSitemaps(x):
     sitemaps = x.find_all("sitemap")
     o = []
@@ -54,7 +64,6 @@ def getChildSitemaps(x):
     return o
 
 # returns the overall list of urls
-
 def getURLs(x):
     urls = x.find_all("url")
     o = []
@@ -62,6 +71,7 @@ def getURLs(x):
         o.append(url.findNext("loc").text)
     return o
 
+# make a BeautifulSoup object from an HTML page
 def getHTML(s):
     response = request(s)
     if response:
@@ -72,6 +82,7 @@ def getHTML(s):
         html = BeautifulSoup(response.content, 'lxml-html', from_encoding=encoding)
         return html
 
+# makes a list of every HTML page
 def HTMLcorpus(s):
     x = getXML(s)
     list = getURLs(x)
@@ -81,9 +92,20 @@ def HTMLcorpus(s):
         html.append(h)
     return html
 
-def crawl(s):
+# extracting the text from the HTML
+def text(s):
     html = HTMLcorpus(s)
     corpus = ""
     for h in html:
-        x = 1
+        if h.main:
+            content = h.main
+        elif h.body:
+            content = h.body
+        else:
+            content = h
+        text = content.get_text()
+        corpus = corpus + text
     return corpus
+
+def crawl(s):
+    return text(s)
