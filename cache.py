@@ -1,22 +1,25 @@
 import modules.crawl as crawl
 import json
+# TODO: make this work (BeautifulSoup objects are not JSON serializable)
 
-f = open("sites.json")
+f = open("sites.json", "r")
+
 sites = json.loads(f.read())
 print(sites)
 
 cache = []
 
 for s in sites["sites"]:
-    site = {}
-    corpus = crawl.HTMLcorpus(s)
-    site["sitename"] = s["sitename"]
-    site["content"] = corpus
-    cache.append(site)
+    print(f"{s['sitename']}--{s['feedurl']}")
+    x = crawl.HTMLcorpus(s["feedurl"])
+    cache.append(x)
     print(crawl.errorpages)
 
 f.close()
 
+print(cache)
+
 g = open("cache.json", "w")
-g.write(cache)
+jsonreport = json.dumps(cache, indent=4)
+g.write(jsonreport)
 g.close()
