@@ -83,7 +83,7 @@ def getHTML(s):
     else:
         return False
 
-# makes a list of every HTML page
+# makes a list containing every HTML page
 def HTMLcorpus(s):
     x = getXML(s)
     list = getURLs(x)
