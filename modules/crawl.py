@@ -6,6 +6,7 @@ import datetime
 # Somewhat heavily using the instructions https://practicaldatascience.co.uk/data-science/how-to-parse-xml-sitemaps-using-python
 
 # HTML requests with error handling and logging
+# TODO: add exception handling for network errors
 errorpages = []
 def request(s):
     t = r.get(s)

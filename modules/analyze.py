@@ -1,7 +1,7 @@
 import fkscore
 import json
 
-def analyze(content, sitename):
+def analyze(content, sitename, url):
   report = ""
 # The BeautifulSoup output doesn't need this.
 #   text = "" 
@@ -12,6 +12,7 @@ def analyze(content, sitename):
   
   fkdata = {
     "sitename": sitename,
+    "siteurl": url,
     "number of sentences": str(f.stats["num_sentences"]),
     "number of words": str(f.stats["num_words"]),
     "Flesch Kincaid reading ease": str(f.score["readability"]),
