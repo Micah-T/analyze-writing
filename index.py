@@ -14,9 +14,19 @@ f = open("sites.json", "r")
 sites = json.loads(f.read())
 print(sites)
 
+pages = {"pages": []}
 for s in sites["sites"]:
     print(f"{s['sitename']}--{s['feedurl']}")
     process(s["feedurl"], s["sitename"], s["siteurl"])
     print(crawl.errorpages)
+    pages["pages"].append(
+            {
+                "slug": generateHTML.slug(s["sitename"]),
+                "sitename": s["sitename"]
+            }
+        )
 
+print(pages)
 f.close()
+
+generateHTML.writeIndex(pages)
