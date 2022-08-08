@@ -1,6 +1,5 @@
 import modules.crawl as crawl
 import json
-# TODO: make this work (BeautifulSoup objects are not JSON serializable)
 
 f = open("sites.json", "r")
 
@@ -11,7 +10,7 @@ cache = []
 
 for s in sites["sites"]:
     print(f"{s['sitename']}--{s['feedurl']}")
-    x = crawl.HTMLcorpus(s["feedurl"])
+    x = crawl.HTMLcorpus(s["feedurl"], True)
     cache.append(x)
     print(crawl.errorpages)
 

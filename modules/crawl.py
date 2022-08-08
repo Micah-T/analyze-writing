@@ -95,13 +95,16 @@ def getHTML(s):
         return False
 
 # makes a list containing every HTML page
-def HTMLcorpus(s):
+def HTMLcorpus(s, json=False):
     x = getXML(s)
     list = getURLs(x)
     html = []
     for l in list:
         h = getHTML(l)
         if h:
+            # because we can't serialize BeautifulSoup objects
+            if json:
+                h = str(h)
             html.append(h)
     return html
 
