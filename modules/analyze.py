@@ -3,13 +3,10 @@ import json
 
 def analyze(content, sitename, url):
   report = ""
-# The BeautifulSoup output doesn't need this.
-#   text = "" 
-#  for line in content:
-#    text = text + line.replace("\n", " ")
       
   f = fkscore.fkscore(content)
-  
+
+  # generating an easily-used dictionary  
   fkdata = {
     "sitename": sitename,
     "siteurl": url,
@@ -19,6 +16,7 @@ def analyze(content, sitename, url):
     "Flesch Kincaid grade level": str(f.score["grade"])
   }
   
+  # generating a text-based reading report
   report = report + "# Reading Ease Report for " + sitename + "\n"
   report = report + "Number of sentences: " + str(f.stats["num_sentences"]) + "\n"
   report = report + "Number of words: " + str(f.stats["num_words"]) + "\n"
@@ -30,6 +28,7 @@ def analyze(content, sitename, url):
   stats.close()
   print(f"Report for {sitename} written to _output/{sitename}-stats.txt.")
 
+  # writing the dictionary to JSON
   stats = open(f"_output/{sitename}-stats.json", "w")
   jsonreport = json.dumps(fkdata, indent=4)
   stats.write(jsonreport)

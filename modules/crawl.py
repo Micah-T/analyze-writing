@@ -28,7 +28,7 @@ def request(s, i = 0):
             errorpages.append(errordata)
             return False
     except Exception as e:
-        # if there's some other sort of error, wait a few seconds, and then try again five times. 
+        # if there's some other sort of error, wait a few seconds, and then try again five times.
         print(e)
         if i < 5:
             time.sleep(5)
@@ -44,7 +44,7 @@ def getXML(s):
         # because we don't have much reason to continue unless a sitemap is available. 
         print("Error requesting XML sitemap. Exiting program.")
         exit() 
-    # because sometimes people like me don't always properly format our XML, let's guess... 😬
+    # because sometimes people like me don't always properly format our XML, let's guess what encoding... 😬
     if not response.encoding:
         encoding = "utf-8"
     else:
@@ -102,7 +102,7 @@ def HTMLcorpus(s, json=False):
     for l in list:
         h = getHTML(l)
         if h:
-            # because we can't serialize BeautifulSoup objects
+            # because we can't serialize BeautifulSoup objects into JSON
             if json:
                 h = str(h)
             html.append(h)
