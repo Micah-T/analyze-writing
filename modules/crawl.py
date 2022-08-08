@@ -2,29 +2,39 @@ from bs4 import BeautifulSoup
 import requests as r
 import lxml as lxml
 import datetime
+import time
 
 # Somewhat heavily using the instructions https://practicaldatascience.co.uk/data-science/how-to-parse-xml-sitemaps-using-python
 
 # HTML requests with error handling and logging
-# TODO: add exception handling for network errors
 errorpages = []
-def request(s):
-    t = r.get(s)
+def request(s, i = 0):
+    try:
+        t = r.get(s)
+        # write to a request log to help explain my web analytics
+        log = open("requestlog.txt", "a")
+        log.write(str(s) + "," + str(t.status_code) + "," + str(datetime.datetime.now()) + "\n")
+        log.close()
 
-    # write to a request log to help explain my web analytics
-    log = open("requestlog.txt", "a")
-    log.write(str(s) + "," + str(t.status_code) + "," + str(datetime.datetime.now()) + "\n")
-    log.close()
+        # error handling in case there is an HTTP error; otherwise we'll end up including error pages in our HTML corpus. 
+        if t.status_code == 200:
+            print(f"successfully requested {s}")
+            return t
 
-    # error handling in case there is an error; otherwise we'll end up including error pages in our HTML corpus. 
-    if t.status_code == 200:
-        print(f"successfully requested {s}")
-        return t
-
-    else:
-        # save all the errors to a list and tell other functions to ignore this page
-        print(f"error requesting {s}: {t.status_code}")
-        errordata = {"url": str(s), "statusCode": t.status_code}
+        else:
+            # save all the errors to a list and tell other functions to ignore this page
+            print(f"error requesting {s}: {t.status_code}")
+            errordata = {"url": str(s), "statusCode": t.status_code}
+            errorpages.append(errordata)
+            return False
+    except Exception as e:
+        # if there's some other sort of error, wait a few seconds, and then try again five times. 
+        print(e)
+        if i < 5:
+            time.sleep(5)
+            i += 1
+            request(s, i)
+        errordata = {"url": str(s), "statusCode": str(e)}
         errorpages.append(errordata)
         return False
 
