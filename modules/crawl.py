@@ -49,10 +49,11 @@ def getXML(s):
         encoding = "utf-8"
     else:
         encoding = response.encoding
+    # this will give an exception if a non-XML document is returned; while I could so something like in `getHTML()`, I decided not to because an exception here should end the program. 
     xml = BeautifulSoup(response.content, 'lxml-xml', from_encoding=encoding)
     return xml
 
-# TODO: add capability for RSS and ATOM feeds
+# TODO: add capability for RSS/ATOM feeds and sitemaps with child sitemaps
 
 def sitemapType(x):
     sitemapindex = x.find_all("sitemapindex")
@@ -84,7 +85,8 @@ def getURLs(x):
 # make a BeautifulSoup object from an HTML page
 def getHTML(s):
     response = request(s)
-    if response:
+    # make sure that it is a valid response and is actually HTML. We'll trust the server, though that might not be the best idea in real life.
+    if response and response.headers["Content-type"].find("text/html") >= 0:
         if not response.encoding:
             encoding = "utf-8"
         else:
@@ -125,17 +127,21 @@ def extractText(h):
     text = content.get_text()
     return text
 
-# TODO: filter that there is indeed worthwile text. 
-def ofSubstance(t):
-    return True 
+# filter that this is indeed a contentful page
+# TODO: do this with natural language processing or something a bit more precise; as is, this only works on a specific design pattern...
+def ofSubstance(h):
+    if h.title.get_text().find("Tagged") >= 0 or h.title.get_text().find("Tags") >= 0:
+        return False
+    else:
+        return True
 
 # extracting the text from the HTML
 def text(s):
     html = HTMLcorpus(s)
     corpus = ""
     for h in html:
-        text = extractText(h)
-        if ofSubstance(text):
+        if ofSubstance(h):
+            text = extractText(h)
             corpus = corpus + text
         else:
             corpus = corpus
