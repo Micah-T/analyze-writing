@@ -1,7 +1,7 @@
 # Analyze-writing
 This project generates reading-ease reports on an entire website based off of an XML sitemap. It is run from `index.py`.
 
-Currently this is hosted at [https://deploy.torcellini.org]. This is a Netlify site based off of a manually-generated Github repository, which is quite clumsy, but I had trouble getting the Python to work in Netlify. 
+Currently this is hosted at [https://analyze-writing.torcellini.org]. This is a Netlify site based off of a manually-generated Github repository, which is quite clumsy, but I had trouble getting the Python to work in Netlify. 
 
 ## Architecture
 
